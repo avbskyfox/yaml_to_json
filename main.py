@@ -1,16 +1,40 @@
-# This is a sample Python script.
+from yaml_parser import YAML
+from json_parser import JSON
+from yaml import dump
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# data = {
+#     'tuesday':
+#         [
+#             {
+#                 'time': '10:00',
+#                 'address': 'St.Ptersburg',
+#                 'class': 123,
+#                 'discipline': 'Mathematica'
+#             },
+#             {
+#                 'time': '12:00',
+#                 'address': 'St.Ptersburg',
+#                 'class': 4523,
+#                 'discipline': 'Biology'
+#             },
+#             {
+#                 'time': '14:00',
+#                 'address': 'St.Ptersburg',
+#                 'class': 32,
+#                 'discipline': 'Programming'
+#             }
+#         ]
+# }
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main():
+    with open('schedule.yaml') as f:
+        s = f.read()
+    data = YAML.load_string(s)
+    s = JSON.dump_string(data)
+    print(s)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
