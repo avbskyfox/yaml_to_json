@@ -14,8 +14,8 @@
 <array> ::= <current_indent> '-\n'|
     ::= <current_indent> '-\s' (string|number) '\n'|
     ::= <current_indent> '-\s' (string|number) '\n' <array> |
-    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() '\n' |
-    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() '\n' <array> |
+    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() |
+    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() <array> |
 
 <number> ::= int | float
 
