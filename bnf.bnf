@@ -2,26 +2,22 @@
 
 <object> ::= <key-value list>
 
-<key-value list> ::= <current_indent> <key> ':\s' (<string>|<number>) + '\n' |
+<key-value list> ::= <current_indent> <key> ':\s' (<string>|<number>) \n|
     ::= <current_indent> <key> ':\s' (<string>|<number>) '\n' + <key-value list> |
-    ::= <current_indent> <key> ':\s\n' <add_indent()> <object> '\n' <remove_indent()> |
-    ::= <current_indent> <key> ':\s\n' <add_indent()> <object> '\n' <remove_indent()> <key-value list> |
-    ::= <current_indent> <key> ':\s\n' <array> '\n'|
-    ::= <current_indent> <key> ':\s\n' <array> '\n' <key-value list>|
+    ::= <current_indent> <key> ':\n' <add_indent()> <object> '\n' <remove_indent()> |
+    ::= <current_indent> <key> ':\n' <add_indent()> <object> '\n' <remove_indent()> <key-value list> |
+    ::= <current_indent> <key> ':\n' <array> '\n'|
+    ::= <current_indent> <key> ':\n' <array> '\n' <key-value list>|
 
-<key> ::=  <string> | <number
+<key> ::=  <string> | <number>
 
-<array> ::= '-\s' | '-\s' + (string|number) |
-    ::= '-\s' + (string|number) + '\n' + <array_elements>|
-    ::= '-\s' +
-
-
-
-<array_elements> ::= '-\s' + (string|number) + '\n' + <array_elements>
+<array> ::= <current_indent> '-\n'|
+    ::= <current_indent> '-\s' (string|number) '\n'|
+    ::= <current_indent> '-\s' (string|number) '\n' <array> |
+    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() '\n' |
+    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() '\n' <array> |
 
 <number> ::= int | float
-
-<EOF> ::= end of document
 
 <remove_indent()> ::= remove two spaces from current indent level
 
