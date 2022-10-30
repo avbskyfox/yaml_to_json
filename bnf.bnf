@@ -1,0 +1,30 @@
+<value> ::= <string> | <number> | <array> | <object>
+
+<object> ::= <key-value list>
+
+<key-value list> ::= <current_indent> <key> ':\s' (<string>|<number>) + '\n' |
+    ::= <current_indent> <key> ':\s' (<string>|<number>) '\n' + <key-value list> |
+    ::= <current_indent> <key> ':\s\n' <add_indent()> <object> '\n' <remove_indent()> |
+    ::= <current_indent> <key> ':\s\n' <add_indent()> <object> '\n' <remove_indent()> <key-value list> |
+    ::= <current_indent> <key> ':\s\n' <array> '\n'|
+    ::= <current_indent> <key> ':\s\n' <array> '\n' <key-value list>|
+
+<key> ::=  <string> | <number
+
+<array> ::= '-\s' | '-\s' + (string|number) |
+    ::= '-\s' + (string|number) + '\n' + <array_elements>|
+    ::= '-\s' +
+
+
+
+<array_elements> ::= '-\s' + (string|number) + '\n' + <array_elements>
+
+<number> ::= int | float
+
+<EOF> ::= end of document
+
+<remove_indent()> ::= remove two spaces from current indent level
+
+<add_indent()> ::= add two spaces to current indent level
+
+<current_indent> ::= current amount of spaces at start of string
