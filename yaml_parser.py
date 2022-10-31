@@ -31,12 +31,12 @@ class Dumper:
         return str(val)
 
     def __scalar_array_item(self, val):
-        return f'{self.get_indent()}- {self.deal_with_type(val)}\n'
+        return f'{self.get_indent()}- {self.process(val)}\n'
 
     def __object_or_array_item(self, val):
         result = f'{self.get_indent()}-\n'
         self.__add_indent()
-        result += f'{self.deal_with_type(val)}'
+        result += f'{self.process(val)}'
         self.__remove_indent()
         return result
 
@@ -56,11 +56,11 @@ class Dumper:
 
     def __key_value_element(self, key, value):
         if type(value) in [str, int, float]:
-            return f'{self.get_indent()}{key}: {self.deal_with_type(value)}\n'
+            return f'{self.get_indent()}{key}: {self.process(value)}\n'
         if type(value) in [list, dict]:
             result = f'{self.get_indent()}{key}:'
             self.__add_indent()
-            result += f'\n{self.deal_with_type(value)}'
+            result += f'\n{self.process(value)}'
             self.__remove_indent()
             return result
 
@@ -70,7 +70,7 @@ class Dumper:
             result_string += self.__key_value_element(key, value)
         return result_string
 
-    def deal_with_type(self, val):
+    def process(self, val):
         if type(val) is list:
             return self.__array(val)
         if type(val) is dict:
@@ -89,5 +89,5 @@ class YAML:
         pass
 
     @staticmethod
-    def dump_string(data, indent=2):
-        return Dumper(indent=indent).deal_with_type(data)
+    def dump_string(data, indent=2, dumper_class=Dumper):
+        return dumper_class(indent=indent).process(data)
