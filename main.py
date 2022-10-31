@@ -1,23 +1,6 @@
-import yaml
-from yaml.loader import SafeLoader
-
 from yaml_parser import YAML
 from json_parser import JSON
-import re
 
-
-# без re.DOTALL мы сломаемся на первом же переносе строки
-number_regex = re.compile(r"(-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)\s*(.*)", re.DOTALL)
-
-def parse_number(src):
-    match = number_regex.match(src)
-    print(match)
-    if match is not None:
-        number, src = match.groups()
-        return eval(number), src  # использовать eval - не лучшее решение, но самое простое
-
-
-from yaml import dump
 
 data = {
     'tuesday':
@@ -48,7 +31,5 @@ def main():
     print(YAML.dump_string(data, 2))
 
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
