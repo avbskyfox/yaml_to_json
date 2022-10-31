@@ -45,9 +45,7 @@ data = {
 
 
 def main():
-    with open('schedule.yaml') as f:
-        s = f.read()
-    print(yaml.load(s, Loader=SafeLoader))
+    print(YAML.dump_string(data, 2))
 
 
 
