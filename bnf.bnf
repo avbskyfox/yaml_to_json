@@ -1,23 +1,22 @@
 <value> ::= <string> | <number> | <array> | <object>
 
-<object> ::= <key-value list>
+<object> ::= <key-value element> | <key-value element> '\n' <key-value list>
+<key-value list> ::= <key-value element> '\n' <key-value list>
+<key-value element> ::= <current_indent> <key> ':\s' <scalar_item> '\n'|
+    ::= <current_indent> <key> ':\n' <add_indent()> <object_or_array_item> <remove_indent()>
+<key> ::=  <scalar_item>
 
-<key-value list> ::= <current_indent> <key> ':\s' (<string>|<number>) \n|
-    ::= <current_indent> <key> ':\s' (<string>|<number>) '\n' + <key-value list> |
-    ::= <current_indent> <key> ':\n' <add_indent()> <object> '\n' <remove_indent()> |
-    ::= <current_indent> <key> ':\n' <add_indent()> <object> '\n' <remove_indent()> <key-value list> |
-    ::= <current_indent> <key> ':\n' <array> '\n'|
-    ::= <current_indent> <key> ':\n' <array> '\n' <key-value list>|
+<array> ::= <array_element> | <array_element> '\n' <array_element_list>
+<array_element_list> ::= <array_element> '\n' <array_element_list>
+<array_element> ::= <current_indent> '-\s' <scalar_item> '\n'|
+    ::= <current_indent> '-\n' add_indent() <object_or_array_item> remove_indent()
 
-<key> ::=  <string> | <number>
-
-<array> ::= <current_indent> '-\n'|
-    ::= <current_indent> '-\s' (string|number) '\n'|
-    ::= <current_indent> '-\s' (string|number) '\n' <array> |
-    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() |
-    ::= <current_indent> '-\n' add_indent() (<array>|<object>) remove_indent() <array> |
+<scalar_item> ::= <string> | <number>
+<object_or_array_item> ::= <array> | <object>
 
 <number> ::= int | float
+
+<string> ::= "str"
 
 <remove_indent()> ::= remove two spaces from current indent level
 
