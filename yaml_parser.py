@@ -195,6 +195,7 @@ class Loader:
         else:
             raise BadSyntax
 
+    # определяет и
     @staticmethod
     def __type(string: str):
         if len(string.split('\n')) > 1:
@@ -202,6 +203,7 @@ class Loader:
         else:
             return 'scalar'
 
+    # определяет тип значения строки и вызывает соответсвующий метод
     def process(self, string: str):
         if self.__type(string) == 'object':
             return self.__object_or_array_item(string)
