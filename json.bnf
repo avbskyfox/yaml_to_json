@@ -1,0 +1,14 @@
+<value> ::= <string> | <number> | <array> | <object>
+
+<object> ::= { <key_value_list> }
+<key_value_list> ::= <key_value_element> | <key_value_element>, <key_value_list>
+<key_value_element> ::= <string>: <value>
+
+<array> ::= [ <comma_separated_elements> ]
+<comma_separated_elements> ::= <value> | <value>, <comma_separated_elements>
+
+<scalar> ::= <string>|<number>
+
+<number> ::= int | float
+
+<string> ::= str

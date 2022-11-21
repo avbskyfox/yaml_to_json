@@ -1,41 +1,37 @@
+import json
+import yaml
+
 from yaml_parser import YAML
 from json_parser import JSON
 
 
-data = {
-    'tuesday':
-        [
-            {
-                'time': '10:00',
-                'address': 'St.Ptersburg',
-                'class': 123,
-                'discipline': 'Mathematica'
-            },
-            {
-                'time': '12:00',
-                'address': 'St.Ptersburg',
-                'class': 4523,
-                'discipline': 'Biology'
-            },
-            {
-                'time': '14:00',
-                'address': 'St.Ptersburg',
-                'class': 32,
-                'discipline': 'Programming'
-            },
-            'asdasd'
-        ],
-    'wensday': 'qsadasd',
-    123: 213
-}
-
-
-with open('test_shcedule.yml') as f:
-    string = f.read()
-
 def main():
-    # print(YAML.dump_string(data, 2))
-    print(YAML.load_string(string))
+    with open('test_shcedule.yml') as f:
+        string = f.read()
+
+    # загрузкf сторонней библиотекой
+    etalon_data = yaml.load(string, yaml.Loader)
+
+    # загрузка кастомной библиотекой
+    custom_data = YAML.load_string(string)
+
+    # проверяем, что полученные объекты идентичны
+    if custom_data == etalon_data:
+        print(custom_data)
+
+    # сериализуем стандартным JSON
+    etalon_string = json.dumps(custom_data, ensure_ascii=False)
+
+    # сериализуем кастомным JSON
+    custom_string = JSON.dump_string(custom_data)
+
+    # проверяем идентичность результатов
+    if etalon_string == custom_string:
+        print(custom_string)
+
+    # сохраняем в файл
+    with open('shcedule.json', 'w') as f:
+        f.write(custom_string)
 
 
 if __name__ == '__main__':

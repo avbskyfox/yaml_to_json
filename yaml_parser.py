@@ -92,11 +92,6 @@ class Loader:
         self.__indent = indent
         self.__current_indent_count = 0
 
-    def __current_indent(self):
-        if self.__current_indent == 0:
-            return ''
-        return ' ' * self.__current_indent_count
-
     def __remove_indent(self, string: str):
         result = ''
         for row in string.split('\n'):
@@ -125,15 +120,17 @@ class Loader:
         else:
             value = prevalue
         if self.__type(value) == 'object':
-            return key, self.__object_or_array_item(value)
+            return key, self.process(value)
         if self.__type(value) == 'scalar':
-            return key, self.__scalar_item(value)
+            return key, self.process(value)
 
     def __key_value_list(self, string: str):
         result = []
         rows = string.split('\n')
         buffer = str()
         for i in range(0, len(rows)):
+            if rows[i] == '':
+                continue
             buffer += f'{rows[i]}\n'
             try:
                 if not (rows[i+1].startswith(' ' * self.__indent) or rows[i+1].startswith('-')):
@@ -154,8 +151,8 @@ class Loader:
         rows = string.split('\n')
         buffer = str()
         for i in range(0, len(rows)):
-            if i == 1:
-                continue
+            # if i == 1: # хз, зачем вообще это было нужно
+            #     continue
             if rows[i].startswith('- '):
                 result.append(rows[i][2:])
             buffer += f'{rows[i]}\n'

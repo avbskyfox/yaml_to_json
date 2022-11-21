@@ -1,6 +1,7 @@
 <value> ::= <string> | <number> | <array> | <object>
 
-<object> ::= <key-value element> | <key-value element> '\n' <key-value list>
+<object> ::= <key-value list>
+<key-value list> ::= <key-value element> | <key-value element> '\n' <key-value list>
 <key-value list> ::= <key-value element> '\n' <key-value list>
 <key-value element> ::= <current_indent> <key> ':\s' <scalar_item> '\n'|
     ::= <current_indent> <key> ':\n' <add_indent()> <object_or_array_item> <remove_indent()>
