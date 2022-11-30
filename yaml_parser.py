@@ -1,90 +1,12 @@
+import re
+
+
 class TypeIsNotSerializable(Exception):
     pass
 
 
 class BadSyntax(Exception):
     pass
-
-
-class Dumper:
-    def __init__(self, indent):
-        self.indent = indent
-        self.__current_indent_count = 0
-
-    def __current_indent(self):
-        if self.__current_indent_count == 0:
-            return ''
-        return ' ' * self.__current_indent_count
-
-    def __add_indent(self):
-        self.__current_indent_count += self.indent
-
-    def __remove_indent(self):
-        self.__current_indent_count -= self.indent
-
-    @staticmethod
-    def __key(val):
-        return str(val)
-
-    @staticmethod
-    def __string(val):
-        return f"\"{val}\""
-
-    @staticmethod
-    def __number(val):
-        return str(val)
-
-    def __scalar_array_item(self, val):
-        return f'{self.__current_indent()}- {self.process(val)}\n'
-
-    def __object_or_array_item(self, val):
-        result = f'{self.__current_indent()}-\n'
-        self.__add_indent()
-        result += f'{self.process(val)}'
-        self.__remove_indent()
-        return result
-
-    def __array_element(self, val):
-        if type(val) in [list, dict]:
-            return self.__object_or_array_item(val)
-        if type(val) in [str, int, float]:
-            return self.__scalar_array_item(val)
-
-    def __array(self, val):
-        if len(val) == 0:
-            return f'{self.__current_indent_count}-\n'
-        result_string = ''
-        for item in val:
-            result_string += self.__array_element(item)
-        return result_string
-
-    def __key_value_element(self, key, value):
-        if type(value) in [str, int, float]:
-            return f'{self.__current_indent()}{key}: {self.process(value)}\n'
-        if type(value) in [list, dict]:
-            result = f'{self.__current_indent()}{key}:'
-            self.__add_indent()
-            result += f'\n{self.process(value)}'
-            self.__remove_indent()
-            return result
-
-    def __object(self, val: dict):
-        result_string = ''
-        for key, value in val.items():
-            result_string += self.__key_value_element(key, value)
-        return result_string
-
-    def process(self, val):
-        if type(val) is list:
-            return self.__array(val)
-        if type(val) is dict:
-            return self.__object(val)
-        if type(val) in [float, int]:
-            return self.__number(val)
-        if type(val) is str:
-            return self.__string(val)
-        else:
-            raise TypeIsNotSerializable(f"can not serialize value of type {type(val)}")
 
 
 class Loader:
@@ -195,7 +117,6 @@ class Loader:
         else:
             raise BadSyntax
 
-    # определяет и
     @staticmethod
     def __type(string: str):
         if len(string.split('\n')) > 1:
@@ -203,11 +124,27 @@ class Loader:
         else:
             return 'scalar'
 
-    # определяет тип значения строки и вызывает соответсвующий метод
+    @staticmethod
+    def __re_type(string: str):
+        if re.search(r'.*: ', string) or re.search(r'.*\n', string):
+            return 'object'
+        if re.match(r'-\n', string) or re.match(r'- ', string):
+            return 'array'
+        else:
+            return 'scalar'
+
     def process(self, string: str):
         if self.__type(string) == 'object':
             return self.__object_or_array_item(string)
         if self.__type(string) == 'scalar':
+            return self.__scalar_item(string)
+
+    def re_process(self, string: str):
+        if self.__re_type(string) == 'object':
+            return self.__object(string)
+        elif self.__re_type(string) == 'array':
+            return self.__array(string)
+        elif self.__re_type(string) == 'scalar':
             return self.__scalar_item(string)
 
 
@@ -217,5 +154,5 @@ class YAML:
         return loader_class(indent=indent).process(s)
 
     @staticmethod
-    def dump_string(data, indent=4, dumper_class=Dumper):
-        return dumper_class(indent=indent).process(data)
+    def re_load_string(s: str, indent=4, loader_class=Loader):
+        return loader_class(indent=indent).re_process(s)
