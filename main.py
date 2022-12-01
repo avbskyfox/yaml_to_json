@@ -13,7 +13,7 @@ def time_test(func):
 
 
 def case1():
-    with open('test_shcedule.yml') as f:
+    with open('test_shcedule.yml', encoding='UTF-8') as f:
         result_string = f.read()
 
     data = YAML.load_string(result_string)
@@ -25,7 +25,7 @@ def case1():
 
 
 def case2():
-    with open('test_shcedule.yml') as f:
+    with open('test_shcedule.yml', encoding='UTF-8') as f:
         string = f.read()
 
     data = yaml.load(string, Loader=yaml.Loader)
@@ -37,7 +37,7 @@ def case2():
 
 
 def case3():
-    with open('test_shcedule.yml') as f:
+    with open('test_shcedule.yml', encoding='UTF-8') as f:
         result_string = f.read()
 
     data = YAML.re_load_string(result_string)

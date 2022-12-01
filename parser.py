@@ -1,6 +1,6 @@
 
 def main():
-    yaml_file = open('test_shcedule.yml', encoding='UTF8-')
+    yaml_file = open('test_shcedule.yml', encoding='UTF-8')
     text = yaml_file.read()[3:]
     # вот эти три строчки - это типа парсер
     text = text.replace('/n', '')
